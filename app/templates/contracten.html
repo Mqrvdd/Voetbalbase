@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="section-title">📋 Contracten</h1>
+<p class="section-subtitle mb-3">Koppelingen tussen spelers en clubs.</p>
+
+{% if not ingelogd %}
+<div class="alert alert-warning">
+    🔒 Je kunt contracten bekijken, maar om contracten toe te voegen, te bewerken of te verwijderen moet je eerst
+    <a href="{{ url_for('main.login') }}">inloggen</a>
+    of
+    <a href="{{ url_for('main.register') }}">registreren</a>.
+</div>
+{% endif %}
+
+<div class="top-actions">
+    {% if ingelogd %}
+        <a class="btn btn-primary" href="{{ url_for('main.contract_toevoegen') }}">+ Nieuw contract</a>
+    {% endif %}
+</div>
+
+<form method="GET" action="{{ url_for('main.contracten') }}" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input list="club-filter-lijst" name="club" class="form-control" placeholder="Filter op club..." value="{{ filter_club or '' }}">
+        <datalist id="club-filter-lijst">
+            {% for club in clubs %}
+                <option value="{{ club.naam }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-secondary">Filter</button>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('main.contracten') }}" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+{% if contracten %}
+<div class="card table-card">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Speler</th>
+                    <th>Club</th>
+                    <th>Positie</th>
+                    <th>Nr</th>
+                    {% if ingelogd %}<th>Acties</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for contract in contracten %}
+                <tr>
+                    <td><strong>{{ contract.speler.naam }}</strong></td>
+                    <td>{{ contract.club.naam }}</td>
+                    <td>{{ contract.positie }}</td>
+                    <td>#{{ contract.rugnummer }}</td>
+
+                    {% if ingelogd %}
+                    <td class="actions-cell">
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-warning" href="{{ url_for('main.contract_bewerken', contract_id=contract.id) }}">✏️</a>
+
+                            <form method="POST"
+                                  action="{{ url_for('main.contract_verwijderen', contract_id=contract.id) }}"
+                                  onsubmit="return confirm('Weet je het zeker?');">
+                                <button class="btn btn-sm btn-danger" type="submit">🗑️</button>
+                            </form>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <h4>📋 Geen contracten gevonden</h4>
+    <p class="text-muted">Koppel spelers aan clubs om contracten zichtbaar te maken.</p>
+</div>
+{% endif %}
+{% endblock %}

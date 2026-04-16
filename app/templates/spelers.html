@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="section-title">⚽ Spelers</h1>
+<p class="section-subtitle mb-3">Overzicht van alle spelers in jouw database.</p>
+
+<div class="top-actions">
+    {% if ingelogd %}
+        <a class="btn btn-primary" href="{{ url_for('main.speler_toevoegen') }}">+ Nieuwe speler</a>
+    {% endif %}
+</div>
+
+<form method="GET" action="{{ url_for('main.spelers') }}" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Zoek speler..."
+            value="{{ zoekterm or '' }}"
+        >
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-secondary">Zoeken</button>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('main.spelers') }}" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+{% if spelers %}
+<div class="card table-card">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Leeftijd</th>
+                    <th>Nationaliteit</th>
+                    {% if ingelogd %}<th>Acties</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for speler in spelers %}
+                <tr>
+                    <td><strong>{{ speler.naam }}</strong></td>
+                    <td>{{ speler.leeftijd }}</td>
+                    <td>{{ speler.nationaliteit }}</td>
+
+                    {% if ingelogd %}
+                    <td class="actions-cell">
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-warning" href="{{ url_for('main.speler_bewerken', speler_id=speler.id) }}">✏️</a>
+
+                            <form method="POST"
+                                  action="{{ url_for('main.speler_verwijderen', speler_id=speler.id) }}"
+                                  onsubmit="return confirm('Weet je het zeker?');">
+                                <button class="btn btn-sm btn-danger" type="submit">🗑️</button>
+                            </form>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <h4>⚽ Geen spelers gevonden</h4>
+    <p class="text-muted">Voeg je eerste speler toe om te beginnen.</p>
+</div>
+{% endif %}
+{% endblock %}

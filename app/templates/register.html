@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card form-card">
+    <div class="text-center mb-4">
+        <div style="font-size: 2.2rem;">🏆</div>
+        <h2 class="mt-2 mb-2">Registreren</h2>
+        <p class="section-subtitle mb-0">Maak een account aan en beheer je eigen voetbalomgeving.</p>
+    </div>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="naam@email.nl") }}
+            {% for error in form.email.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Minimaal 6 tekens") }}
+            {% for error in form.password.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="d-grid">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    <p class="mt-4 mb-0 text-center">
+        Heb je al een account?
+        <a href="{{ url_for('main.login') }}">Login hier</a>
+    </p>
+</div>
+{% endblock %}
