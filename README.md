@@ -1,6 +1,6 @@
 # ⚽ VoetbalBase
 
-Een Flask-gebaseerde voetbalbase voor beheer van spelers, clubs en contracten. Registreer met je email, log in, en beheer je voetbaldata met een gebruiksvriendelijke interface.
+Een voetbalbase voor beheer van spelers, clubs en contracten. Registreer met je email, log in, en beheer je voetbaldata!
 
 ---
 
@@ -13,7 +13,7 @@ Een Flask-gebaseerde voetbalbase voor beheer van spelers, clubs en contracten. R
 * **Geavanceerd Zoeken**: Zoek spelers op naam en filter op nationaliteit
 * **Dashboard**: Overzicht van alle spelers, clubs en contracten
 * **Beveiliging**: Wachtwoorden gehasht met bcrypt, login-required bescherming
-* **Responsief Design**: Werkt perfect op desktop, tablet en mobiel
+* **Responsief Design**: Werkt op desktop, tablet en mobiel
 
 ---
 
